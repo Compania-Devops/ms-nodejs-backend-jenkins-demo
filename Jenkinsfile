@@ -81,18 +81,9 @@ pipeline {
 
                 sh '''
                   echo ">>> Renderizando k8s.yml..."
-        
-                  sed -e "s|\\${APELLIDO}|$APELLIDO|g" \
-                      -e "s|\\${ENV}|$ENV|g" \
-                      -e "s|\\${IMAGE_TAG}|$IMAGE_TAG|g" \
-                      -e "s|\\${API_PROVIDER_URL}|$API_PROVIDER_URL|g" \
-                      k8s.yml > k8s-render.yml
-        
-                  echo ">>> Archivo generado:"
-                  cat k8s-render.yml
                   
-                  envsubst < k8s.yml > k8s_v2.yml
-                  cat k8s_v2.yml
+                  envsubst < k8s.yml > k8s-render.yml
+                  cat k8s-render.yml
 
                 '''
             }
