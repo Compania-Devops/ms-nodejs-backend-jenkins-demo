@@ -4,6 +4,7 @@ pipeline {
     }
 
     environment {
+        APELLIDO = "demo"
         ACR_NAME = "acrglobalcicd"
         ACR_LOGIN_SERVER = "acrglobalcicd.azurecr.io"
         IMAGE_NAME = "my-nodejs-app-apellido"
@@ -63,15 +64,6 @@ pipeline {
             }
         }
 
-        stage('Set Image Tag in k8s.yml') {
-            steps {
-                sh '''
-                  echo "Actualizando tag dentro de k8s.yml..."
-                  sed -i "s|IMAGE_TAG_REPLACE|$IMAGE_TAG|g" k8s.yml
-                '''
-            }
-        }
-
         stage('AKS Credentials') {
             steps {
                 sh '''
@@ -84,6 +76,22 @@ pipeline {
             }
         }
 
+        stage('Set Image Tag in k8s.yml') {
+            steps {
+                script { 
+                    // Declarar más variables de entorno
+                    env.API_PROVIDER_URL = "https://dev.api.com"
+                    env.ENV = "dev"
+                }
+
+                sh '''
+                  echo "Actualizando tag dentro de k8s.yml..."
+                  
+                  envsubst < k8s.yml > k8s_rendered.yml
+                  cat k8s_rendered.yml
+                '''
+            }
+        }
 
         stage('Deploy to AKS') {
           steps {
@@ -91,8 +99,8 @@ pipeline {
                 az aks command invoke \
                   --resource-group rg-cicd-terraform-app-araujobmw \
                   --name aks-dev-eastus \
-                  --command "kubectl apply -f k8s.yml" \
-                  --file k8s.yml
+                  --command "kubectl apply -f k8s_rendered.yml" \
+                  --file k8s_rendered.yml
 
             '''
           }
