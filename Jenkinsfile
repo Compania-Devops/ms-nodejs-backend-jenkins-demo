@@ -35,7 +35,19 @@ pipeline {
             }
         }
 
-        stage('Get Git Commit Short SHA') {
+        stage('AKS Credentials') {
+            steps {
+                sh '''
+                  echo ">>> Obteniendo credenciales de AKS..."
+                  az aks get-credentials \
+                    --resource-group $RESOURCE_GROUP \
+                    --name $AKS_NAME \
+                    --overwrite-existing
+                '''
+            }
+        }
+        
+        stage('[CI] Get Git Commit Short SHA') {
             steps {
                 script {
                     env.IMAGE_TAG = sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
@@ -44,7 +56,7 @@ pipeline {
             }
         }
 
-        stage('Build & Push to ACR') {
+        stage('[CI] Build & Push to ACR') {
             steps {
                 sh '''
                   echo ">>> Login al ACR..."
@@ -59,19 +71,7 @@ pipeline {
             }
         }
 
-        stage('AKS Credentials') {
-            steps {
-                sh '''
-                  echo ">>> Obteniendo credenciales de AKS..."
-                  az aks get-credentials \
-                    --resource-group $RESOURCE_GROUP \
-                    --name $AKS_NAME \
-                    --overwrite-existing
-                '''
-            }
-        }
-
-        stage('Set Image Tag in k8s.yml') {
+        stage('[CD-DEV] Set Image Tag in k8s.yml') {
             steps {
                 script { 
                     // Declarar más variables de entorno
@@ -94,7 +94,7 @@ pipeline {
             }
         }
 
-        stage('Deploy to AKS') {
+        stage('[CD-DEV] Deploy to AKS') {
           steps {
             sh '''
                 az aks command invoke \
