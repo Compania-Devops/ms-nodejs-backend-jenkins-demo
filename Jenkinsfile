@@ -88,17 +88,12 @@ pipeline {
         stage('Deploy to AKS') {
           steps {
             sh '''
-              echo ">>> Aplicando manifiesto..."
-        
-              MANIFEST_CONTENT=$(cat k8s.yml)
-        
-              az aks command invoke \
-                --resource-group rg-cicd-terraform-app-araujobmw \
-                --name aks-dev-eastus \
-                --command "kubectl apply -f -" \
-                --stdin <<EOF
-                    $MANIFEST_CONTENT
-                    EOF
+                az aks command invoke \
+                  --resource-group rg-cicd-terraform-app-araujobmw \
+                  --name aks-dev-eastus \
+                  --command "kubectl apply -f k8s.yml" \
+                  --file k8s.yml
+
             '''
           }
         }
