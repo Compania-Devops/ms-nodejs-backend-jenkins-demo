@@ -85,6 +85,7 @@ pipeline {
                   sed -e "s|\\${APELLIDO}|$APELLIDO|g" \
                       -e "s|\\${ENV}|$ENV|g" \
                       -e "s|\\${IMAGE_TAG}|$IMAGE_TAG|g" \
+                      -e "s|\\${API_PROVIDER_URL}|$API_PROVIDER_URL|g" \
                       k8s.yml > k8s-render.yml
         
                   echo ">>> Archivo generado:"
