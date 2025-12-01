@@ -85,10 +85,15 @@ pipeline {
                 }
 
                 sh '''
-                  echo "Actualizando tag dentro de k8s.yml..."
-                  
-                  envsubst < k8s.yml > k8s_rendered.yml
-                  cat k8s_rendered.yml
+                  echo ">>> Renderizando k8s.yml..."
+        
+                  sed -e "s|\\${APELLIDO}|$APELLIDO|g" \
+                      -e "s|\\${ENV}|$ENV|g" \
+                      -e "s|\\${IMAGE_TAG}|$IMAGE_TAG|g" \
+                      k8s.yml > k8s-render.yml
+        
+                  echo ">>> Archivo generado:"
+                  cat k8s-render.yml
                 '''
             }
         }
@@ -99,8 +104,8 @@ pipeline {
                 az aks command invoke \
                   --resource-group rg-cicd-terraform-app-araujobmw \
                   --name aks-dev-eastus \
-                  --command "kubectl apply -f k8s_rendered.yml" \
-                  --file k8s_rendered.yml
+                  --command "kubectl apply -f k8s-render.yml" \
+                  --file k8s-render.yml
 
             '''
           }
