@@ -4,7 +4,7 @@ pipeline {
     }
 
     environment {
-        APELLIDO = "demo" // Cambiar por apellido
+        APELLIDO = "demo1" // Cambiar por apellido
         ACR_NAME = "acrglobalcicd"
         ACR_LOGIN_SERVER = "acrglobalcicd.azurecr.io"
         IMAGE_NAME = "my-nodejs-app-${APELLIDO}"
@@ -105,8 +105,8 @@ pipeline {
             steps {
                 sh '''
                   echo ">>> Intentando obtener IP del LoadBalancer..."
-        
-                  SERVICE_NAME="my-nodejs-app-${APELLIDO}-${ENV}"  # Cambia esto por el nombre real de tu Service
+
+                  SERVICE_NAME="my-nodejs-service-${APELLIDO}-${ENV}"  # Cambia esto por el nombre real de tu Service
                   LB_IP=""
                   MAX_RETRIES=5
                   RETRY_COUNT=0
