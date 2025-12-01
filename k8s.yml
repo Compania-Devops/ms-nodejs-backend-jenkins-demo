@@ -1,30 +1,30 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: my-nodejs-app-apellido-dev
+  name: my-nodejs-app-${APELLIDO}-${ENV}
   labels:
-    app: my-nodejs-app-apellido-dev
+    app: my-nodejs-app-${APELLIDO}-${ENV}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: my-nodejs-app-apellido-dev
+      app: my-nodejs-app-${APELLIDO}-${ENV}
   template:
     metadata:
       labels:
-        app: my-nodejs-app-apellido-dev
+        app: my-nodejs-app-${APELLIDO}-${ENV}
     spec:
       containers:
-        - name: my-nodejs-app-apellido-dev
-          image: acrglobalcicd.azurecr.io/my-nodejs-app-apellido:IMAGE_TAG_REPLACE
+        - name: my-nodejs-app-${APELLIDO}-${ENV}
+          image: acrglobalcicd.azurecr.io/my-nodejs-app-${APELLIDO}:${IMAGE_TAG}
           ports:
             - containerPort: 80
           env:
             - name: API_PROVIDER_URL
-              value: "https://dev.api.com"
+              value: "${API_PROVIDER_URL}"
 
             - name: ENV
-              value: "dev"
+              value: "${ENV}"
 
           # HEALTHCHECK apuntando a /api-docs
           readinessProbe:
@@ -47,10 +47,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: my-nodejs-service-apellido-dev
+  name: my-nodejs-service-${APELLIDO}-${ENV}
 spec:
   selector:
-    app: my-nodejs-app-apellido-dev
+    app: my-nodejs-app-${APELLIDO}-${ENV}
   ports:
     - port: 80
       targetPort: 80
