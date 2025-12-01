@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: my-nodejs-app-apellido-dev
-          image: acrglobalcicd.azurecr.io/my-nodejs-app-apellido:bce402d
+          image: acrglobalcicd.azurecr.io/my-nodejs-app-apellido:IMAGE_TAG_REPLACE
           ports:
             - containerPort: 80
           env:
