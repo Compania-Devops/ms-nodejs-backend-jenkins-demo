@@ -4,7 +4,7 @@ pipeline {
     }
 
     environment {
-        APELLIDO = "demo" # Cambiar por apellido
+        APELLIDO = "demo" // Cambiar por apellido
         ACR_NAME = "acrglobalcicd"
         ACR_LOGIN_SERVER = "acrglobalcicd.azurecr.io"
         IMAGE_NAME = "my-nodejs-app-${APELLIDO}"
