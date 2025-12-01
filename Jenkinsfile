@@ -4,20 +4,15 @@ pipeline {
     }
 
     environment {
-        APELLIDO = "demo"
+        APELLIDO = "demo" # Cambiar por apellido
         ACR_NAME = "acrglobalcicd"
         ACR_LOGIN_SERVER = "acrglobalcicd.azurecr.io"
-        IMAGE_NAME = "my-nodejs-app-apellido"
+        IMAGE_NAME = "my-nodejs-app-${APELLIDO}"
         RESOURCE_GROUP = "rg-cicd-terraform-app-araujobmw"
         AKS_NAME = "aks-dev-eastus"
     }
 
     stages {
-        stage('Hello') {
-            steps {
-                echo 'Hello World desde Jenkins!'
-            }
-        }
 
         stage('Azure Login') {
             steps {
