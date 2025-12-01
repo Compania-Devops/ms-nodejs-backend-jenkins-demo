@@ -82,8 +82,8 @@ pipeline {
                 sh '''
                   echo ">>> Renderizando k8s.yml..."
                   
-                  envsubst < k8s.yml > k8s-render.yml
-                  cat k8s-render.yml
+                  envsubst < k8s.yml > k8s-dev.yml
+                  cat k8s-dev.yml
 
                 '''
             }
@@ -93,10 +93,10 @@ pipeline {
           steps {
             sh '''
                 az aks command invoke \
-                  --resource-group rg-cicd-terraform-app-araujobmw \
-                  --name aks-dev-eastus \
-                  --command "kubectl apply -f k8s-render.yml" \
-                  --file k8s-render.yml
+                  --resource-group $RESOURCE_GROUP \
+                  --name $AKS_NAME \
+                  --command "kubectl apply -f k8s-dev.yml" \
+                  --file k8s-dev.yml
 
             '''
           }
