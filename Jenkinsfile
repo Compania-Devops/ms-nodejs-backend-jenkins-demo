@@ -6,7 +6,7 @@ pipeline {
     environment {
         APELLIDO = "demo1" // Cambiar por apellido
         ACR_NAME = "acrglobalcicd"
-        ACR_LOGIN_SERVER = "acrglobalcicd.azurecr.io"
+        ACR_LOGIN_SERVER = "${ACR_NAME}.azurecr.io"
         IMAGE_NAME = "my-nodejs-app-${APELLIDO}"
         RESOURCE_GROUP = "rg-cicd-terraform-app-araujobmw"
         AKS_NAME = "aks-dev-eastus"
