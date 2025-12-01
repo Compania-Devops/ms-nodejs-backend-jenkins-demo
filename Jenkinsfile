@@ -90,6 +90,10 @@ pipeline {
         
                   echo ">>> Archivo generado:"
                   cat k8s-render.yml
+                  
+                  envsubst < k8s.yml > k8s_v2.yml
+                  cat k8s_v2.yml
+
                 '''
             }
         }
