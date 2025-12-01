@@ -98,7 +98,7 @@ pipeline {
                   --resource-group rg-cicd-terraform-app-araujobmw \
                   --name aks-dev-eastus \
                   --command "kubectl apply -f -" \
-                  --file k8s.yml
+                  --input-file k8s.yml
                 '''
             }
         }
