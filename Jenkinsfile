@@ -84,11 +84,21 @@ pipeline {
             }
         }
 
-        stage('Deploy to AKS') {
+
+        stage('Deploy en AKS') {
             steps {
                 sh '''
-                  echo ">>> Aplicando manifiesto..."
-                  kubectl apply -f k8s.yml
+                echo ">>> Reemplazando TAG dinámico en k8s.yml"
+
+                sed -i "s|IMAGE_TAG_REPLACE|$IMAGE_TAG|g" k8s.yml
+
+                echo ">>> Aplicando manifiesto"
+
+                az aks command invoke \
+                  --resource-group rg-cicd-terraform-app-araujobmw \
+                  --name aks-dev-eastus \
+                  --command "kubectl apply -f -" \
+                  --file k8s.yml
                 '''
             }
         }
